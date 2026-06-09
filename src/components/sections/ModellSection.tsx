@@ -5,8 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { MEDIA } from "@/lib/motion";
 import SplitText from "@/components/typography/SplitText";
-import { useSplitScale } from "@/components/typography/useSplitScale";
-import { useSplitLines } from "@/components/typography/useSplitLines";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 
 const timelineCards = [
@@ -96,8 +95,8 @@ export default function ModellSection() {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const overlayRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  useSplitScale({ scope: sectionRef });
-  useSplitLines({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
+  useSplitReveal({ scope: sectionRef, variant: "lines" });
 
   const getMetrics = () => {
     const viewportWidth = viewportRef.current?.clientWidth ?? 0;

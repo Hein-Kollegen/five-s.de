@@ -4,8 +4,7 @@ import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { readMotionGate, MEDIA } from "@/lib/motion";
-import { useSplitLines } from "@/components/typography/useSplitLines";
-import { useSplitScale } from "@/components/typography/useSplitScale";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 
 const CONTROLS_HIDE_DELAY = 2000;
 
@@ -101,8 +100,8 @@ export default function TeamVideo() {
     await exitFullscreen.call(doc);
   };
 
-  useSplitScale({ scope: sectionRef });
-  useSplitLines({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
+  useSplitReveal({ scope: sectionRef, variant: "lines" });
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(MEDIA.belowLg);

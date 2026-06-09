@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { readMotionGate } from "@/lib/motion";
-import { useSplitScale } from "@/components/typography/useSplitScale";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { Section } from "@/components/layout/Section";
 
 const cases = [
@@ -41,7 +41,7 @@ export default function CaseStudiesSection() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
 
-  useSplitScale({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
 
   useGSAP(
     () => {

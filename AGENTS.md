@@ -22,13 +22,13 @@ How to build in this repo. Read this before touching any component. For *what th
 - **`src/components/layout/Section.tsx`** — the layout primitive. Wraps content in `.content-wrap`, gives `min-h-[100svh]` per section on `lg`, optional `centerY`. Compose pages from `<Section>`, don't hand-roll section shells.
 - **Colors** (Tailwind + CSS vars): `midnight #080716` (page bg), `deepsea #092B42`, `gold #DBC18D`, `white`. Use the named tokens (`bg-midnight`, `text-gold`, …), not raw hex.
 - **Type**: font is **Raleway** via `next/font` (`--font-display` / `--font-body`). Headings are uppercase; fluid `clamp()` sizes live in `globals.css` (`--fs-h1/h2/h3/body`) and `tailwind.config.js` (`text-h1` … `text-body`). A `--font-scale-desktop` var scales the whole desktop type ramp.
-- Typography helpers: `src/components/typography/` — `SplitText`, `useSplitLines`, `useSplitScale` for line/char splitting used by GSAP reveals.
+- Typography helpers: `src/components/typography/` — `SplitText`, and `useSplitReveal({ scope, variant })` (`variant: "lines" | "scale"`) for the two scroll-in reveal patterns (`.split-lines` / `.split-scale`).
 
 ## Motion
 
 - **`src/lib/gsap.ts` is the single import point for `gsap` and every plugin.** Import `{ gsap, ScrollTrigger, … }` from `@/lib/gsap` — never from `gsap` / `gsap/ScrollTrigger` directly, and never call `gsap.registerPlugin` in a component. The registry registers every plugin once at module load; importing anything from it runs that side-effect.
 - **The motion gate lives in `src/lib/motion.ts`.** Call `readMotionGate()` inside the GSAP setup callback for the one-shot "should this section animate?" decision (`{ prefersReducedMotion, isMobile, shouldAnimate }`) — don't hand-write `window.matchMedia` gates. For reactive viewport splits inside a section use `gsap.matchMedia()` with the **`MEDIA`** constants (`MEDIA.lgUp` / `MEDIA.belowLg` / `MEDIA.reducedMotion`). The mobile breakpoint is unified with Tailwind `lg` (1024px); never reintroduce the raw `1023px` string.
-- Reusable animations in `src/lib/gsap/animations.ts` (currently unused), and `src/lib/scrollTriggerRefresh.ts`.
+- ScrollTrigger refresh orchestration lives in `src/lib/scrollTriggerRefresh.ts`.
 - Two providers in `src/app/layout.tsx` guard motion: **`PageBootProvider`** (boot/FOUC gating) and **`ScrollTriggerStabilityProvider`** (keeps ScrollTrigger measurements stable across reflows). Respect them — new scroll-driven sections should refresh ScrollTrigger via the existing helper, not ad-hoc.
 
 ## Component registry
@@ -38,6 +38,13 @@ How to build in this repo. Read this before touching any component. For *what th
   (`CaseStudiesSection`, `ModellSection`+`ModellDetailSection`, `TestimonialSlider` are the slider/detail-heavy ones.)
 - **UI** (`src/components/ui/`): `CustomCursor`, `PageLoader`.
 - **Providers** (`src/components/providers/`): boot + ScrollTrigger stability (above).
+
+## Relaunch workflow
+
+- Before reworking, removing, or adding a section, compare the proposed section behavior against [`CONTEXT.md`](CONTEXT.md), especially **Customer information use**, **Sales presentation use**, **User barrier**, **Normal webpage**, and **Animation enhancement**.
+- For each section, make the decision explicit in `docs/relaunch/sections/<SectionName>.md`: keep, rework, replace, remove, or add. Use `docs/relaunch/sections/README.md` as the template so diffs are easy to review.
+- Treat scroll pins, forced scroll distances, invisible scroll rerouting, slider scroll capture without clear pointer intent, motion-gated content, weak orientation, poor section scanning, and performance stutter as defects unless a documented exception applies.
+- If primary CTAs are added later, adapt the `hk-website` `PillCta` pattern for this Next.js repo. Do not invent a separate primary button style.
 
 ## Conventions
 

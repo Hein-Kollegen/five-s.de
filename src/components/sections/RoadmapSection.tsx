@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { readMotionGate, MEDIA } from "@/lib/motion";
-import { useSplitScale } from "@/components/typography/useSplitScale";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { Section } from "@/components/layout/Section";
 
 const phaseOneHeadline = ["JA?", "NEIN?", "VIELLEICHT?"];
@@ -86,7 +86,7 @@ export default function RoadmapSection() {
   const phaseOneWordRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const phaseTwoWordRefs = useRef<Array<HTMLSpanElement | null>>([]);
 
-  useSplitScale({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
 
   useGSAP(
     () => {

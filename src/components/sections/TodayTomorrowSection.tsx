@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { readMotionGate } from "@/lib/motion";
 import SplitText from "@/components/typography/SplitText";
-import { useSplitScale } from "@/components/typography/useSplitScale";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { Section } from "@/components/layout/Section";
 import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 
@@ -147,7 +147,7 @@ export default function TodayTomorrowSection() {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const hasMountedTabRefreshRef = useRef(false);
 
-  useSplitScale({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
 
   useGSAP(
     () => {

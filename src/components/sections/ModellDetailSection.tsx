@@ -6,8 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { readMotionGate, MEDIA } from "@/lib/motion";
 import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
-import { useSplitLines } from "@/components/typography/useSplitLines";
-import { useSplitScale } from "@/components/typography/useSplitScale";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { Section } from "@/components/layout/Section";
 
 const detailSlides = [
@@ -95,8 +94,8 @@ export default function ModellDetailSection() {
   const isAnimatingRef = useRef(false);
   const listScrollGuardUntilRef = useRef(0);
 
-  useSplitScale({ scope: sectionRef });
-  useSplitLines({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
+  useSplitReveal({ scope: sectionRef, variant: "lines" });
 
   const markListScrollGuard = () => {
     listScrollGuardUntilRef.current = Date.now() + LIST_SCROLL_GUARD_MS;

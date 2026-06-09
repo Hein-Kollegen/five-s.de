@@ -10,7 +10,7 @@ import type { Swiper as SwiperType } from "swiper";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import { useSplitLines } from "@/components/typography/useSplitLines";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { Section } from "@/components/layout/Section";
 
 const testimonials = [
@@ -62,7 +62,7 @@ export default function TestimonialSlider() {
     };
   }, []);
 
-  useSplitLines({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "lines" });
 
   const clearGestureTimer = () => {
     if (gestureIdleTimerRef.current !== null) {

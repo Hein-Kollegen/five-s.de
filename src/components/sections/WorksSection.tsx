@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useRef } from "react";
-import { useSplitScale } from "@/components/typography/useSplitScale";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { Section } from "@/components/layout/Section";
 
 type WorkItem = {
@@ -47,7 +47,7 @@ const works: WorkItem[] = [
 export default function WorksSection() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  useSplitScale({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
 
   return (
     <Section

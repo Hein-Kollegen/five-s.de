@@ -5,8 +5,7 @@ import { useGSAP } from "@gsap/react";
 import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import { readMotionGate } from "@/lib/motion";
-import { useSplitLines } from "@/components/typography/useSplitLines";
-import { useSplitScale } from "@/components/typography/useSplitScale";
+import { useSplitReveal } from "@/components/typography/useSplitReveal";
 import { Section } from "@/components/layout/Section";
 
 const counters = [
@@ -33,8 +32,8 @@ export default function OverviewSection() {
   const badgesRef = useRef<HTMLDivElement | null>(null);
   const badgesTrackRef = useRef<HTMLDivElement | null>(null);
 
-  useSplitScale({ scope: sectionRef });
-  useSplitLines({ scope: sectionRef });
+  useSplitReveal({ scope: sectionRef, variant: "scale" });
+  useSplitReveal({ scope: sectionRef, variant: "lines" });
 
   useGSAP(
     () => {
