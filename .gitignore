@@ -2,7 +2,16 @@
 node_modules
 .vercel
 .DS_Store
-devserver.log
 .agents
+
 # Logs
+devserver.log
 devserver.out.log
+devserver.err.log
+*.log
+
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Next.js auto-generated
+next-env.d.ts
