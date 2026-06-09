@@ -2,28 +2,20 @@
 
 import type { RefObject } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SplitText from "gsap/SplitText";
+import { gsap, SplitText } from "@/lib/gsap";
+import { readMotionGate } from "@/lib/motion";
 import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type UseSplitLinesOptions = {
   scope: RefObject<HTMLElement | null>;
 };
-
-gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export function useSplitLines({ scope }: UseSplitLinesOptions) {
   useGSAP(
     () => {
       if (!scope.current) return;
 
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const { prefersReducedMotion, isMobile } = readMotionGate();
 
       const targets = gsap.utils.toArray<HTMLElement>(".split-lines", scope.current);
 

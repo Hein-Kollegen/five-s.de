@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger, DrawSVGPlugin } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
+import { readMotionGate, MEDIA } from "@/lib/motion";
 import { useSplitScale } from "@/components/typography/useSplitScale";
 import { Section } from "@/components/layout/Section";
 
@@ -109,10 +110,7 @@ export default function RoadmapSection() {
         return;
       }
 
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const { prefersReducedMotion, isMobile } = readMotionGate();
 
       if (prefersReducedMotion || isMobile) {
         gsap.set(fallback, { autoAlpha: 1 });
@@ -172,12 +170,7 @@ export default function RoadmapSection() {
     () => {
       if (!sectionRef.current || !gridRef.current) return;
 
-      gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
-
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const { prefersReducedMotion, isMobile } = readMotionGate();
 
       const updatePathGeometry = () => {
         if (!gridRef.current || !pathSvgRef.current || !pathRef.current) return;
@@ -227,7 +220,7 @@ export default function RoadmapSection() {
           if (!overlay) return;
           gsap.set(overlay, { opacity: 0 });
         });
-        if (window.matchMedia("(min-width: 1024px)").matches) {
+        if (window.matchMedia(MEDIA.lgUp).matches) {
           updatePathGeometry();
           if (pathRef.current) {
             gsap.set(pathRef.current, { drawSVG: "100%" });
@@ -274,7 +267,7 @@ export default function RoadmapSection() {
 
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 1024px)", () => {
+      mm.add(MEDIA.lgUp, () => {
         const firstCard = cardsRef.current[0];
         const lastCard = cardsRef.current[cardsRef.current.length - 1];
         const path = pathRef.current;

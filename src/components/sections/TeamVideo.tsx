@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "@/lib/gsap";
+import { readMotionGate, MEDIA } from "@/lib/motion";
 import { useSplitLines } from "@/components/typography/useSplitLines";
 import { useSplitScale } from "@/components/typography/useSplitScale";
 
@@ -105,7 +105,7 @@ export default function TeamVideo() {
   useSplitLines({ scope: sectionRef });
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 1023px)");
+    const mediaQuery = window.matchMedia(MEDIA.belowLg);
     const updateViewport = () => {
       setIsMobileViewport(mediaQuery.matches);
     };
@@ -125,12 +125,7 @@ export default function TeamVideo() {
     () => {
       if (!videoWrapRef.current) return;
 
-      gsap.registerPlugin(ScrollTrigger);
-
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const { prefersReducedMotion, isMobile } = readMotionGate();
 
       if (prefersReducedMotion || isMobile) {
         gsap.set(videoWrapRef.current, { opacity: 1 });

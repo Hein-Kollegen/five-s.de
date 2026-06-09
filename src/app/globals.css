@@ -108,7 +108,7 @@ body {
   overflow-x: hidden;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1023.98px) {
   :root {
     --fs-h2: clamp(2rem, 6.2vw, 3.75rem);
     --fs-h3: clamp(1.125rem, 4.2vw, 1.875rem);

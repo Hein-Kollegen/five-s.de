@@ -3,9 +3,8 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { gsap } from "@/lib/gsap";
+import { readMotionGate } from "@/lib/motion";
 import { useSplitLines } from "@/components/typography/useSplitLines";
 import { useSplitScale } from "@/components/typography/useSplitScale";
 import { Section } from "@/components/layout/Section";
@@ -41,12 +40,7 @@ export default function OverviewSection() {
     () => {
       if (!sectionRef.current || !countersRef.current) return;
 
-      gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
-
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const { prefersReducedMotion, isMobile } = readMotionGate();
 
       if (isMobile && badgesTrackRef.current) {
         if (prefersReducedMotion) {

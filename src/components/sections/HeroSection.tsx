@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { gsap } from "@/lib/gsap";
+import { readMotionGate, MEDIA } from "@/lib/motion";
 import SplitText from "@/components/typography/SplitText";
 
 const TEXTS = [" kein Marketing.", " ein System."];
@@ -18,7 +19,7 @@ function HeroTypedTitle() {
   const delayedRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const mediaQuery = window.matchMedia(MEDIA.lgUp);
     const syncDesktop = () => setIsDesktop(mediaQuery.matches);
     syncDesktop();
     mediaQuery.addEventListener("change", syncDesktop);
@@ -191,9 +192,7 @@ export default function HeroSection() {
   ];
 
   useGSAP(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const { prefersReducedMotion } = readMotionGate();
 
     if (prefersReducedMotion) {
       return;

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { readMotionGate, MEDIA } from "@/lib/motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -52,7 +52,7 @@ export default function TestimonialSlider() {
   const lastProgressRef = useRef(0);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 1023px)");
+    const mediaQuery = window.matchMedia(MEDIA.belowLg);
     const syncMobile = () => setIsMobile(mediaQuery.matches);
     syncMobile();
     mediaQuery.addEventListener("change", syncMobile);
@@ -96,14 +96,10 @@ export default function TestimonialSlider() {
     () => {
       if (!sliderRef.current || !sectionRef.current) return;
 
-      gsap.registerPlugin(ScrollTrigger);
-
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+      const { prefersReducedMotion } = readMotionGate();
       const mm = gsap.matchMedia();
 
-      mm.add("(max-width: 1023px)", () => {
+      mm.add(MEDIA.belowLg, () => {
         ScrollTrigger.getById("testimonial-slider-pin")?.kill();
         gsap.set(sliderRef.current, { opacity: 1, y: 0 });
         lastProgressRef.current = 0;
@@ -113,7 +109,7 @@ export default function TestimonialSlider() {
         clearGestureTimer();
       });
 
-      mm.add("(min-width: 1024px)", () => {
+      mm.add(MEDIA.lgUp, () => {
         if (prefersReducedMotion) {
           gsap.set(sliderRef.current, { opacity: 1, y: 0 });
           return;

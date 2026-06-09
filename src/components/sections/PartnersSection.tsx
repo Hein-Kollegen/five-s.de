@@ -2,11 +2,9 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "@/lib/gsap";
+import { readMotionGate, MEDIA } from "@/lib/motion";
 import Image from "next/image";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const rows = [
   [
@@ -80,9 +78,7 @@ export default function PartnersSection() {
     () => {
       if (!sectionRef.current || !rowsRef.current) return;
 
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+      const { prefersReducedMotion } = readMotionGate();
 
       if (prefersReducedMotion) {
         gsap.set(rowsRef.current, { yPercent: 0 });
@@ -94,7 +90,7 @@ export default function PartnersSection() {
 
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 1024px)", () => {
+      mm.add(MEDIA.lgUp, () => {
         gsap.set(rowsRef.current, {
           yPercent: 0,
           clearProps: "transform,willChange"
@@ -126,7 +122,7 @@ export default function PartnersSection() {
         });
       });
 
-      mm.add("(max-width: 1023px)", () => {
+      mm.add(MEDIA.belowLg, () => {
         gsap.set(rowsRef.current, {
           yPercent: 0,
           clearProps: "transform,willChange"

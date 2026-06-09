@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import gsap from "gsap";
+import { gsap } from "@/lib/gsap";
 import { usePageBoot } from "@/components/providers/PageBootProvider";
 
 const CURSOR_MEDIA_QUERY = "(min-width: 1024px) and (pointer: fine)";

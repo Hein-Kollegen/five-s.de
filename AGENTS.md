@@ -26,7 +26,9 @@ How to build in this repo. Read this before touching any component. For *what th
 
 ## Motion
 
-- GSAP setup lives in `src/lib/gsap.ts`, reusable animations in `src/lib/gsap/animations.ts`, and `src/lib/scrollTriggerRefresh.ts`.
+- **`src/lib/gsap.ts` is the single import point for `gsap` and every plugin.** Import `{ gsap, ScrollTrigger, … }` from `@/lib/gsap` — never from `gsap` / `gsap/ScrollTrigger` directly, and never call `gsap.registerPlugin` in a component. The registry registers every plugin once at module load; importing anything from it runs that side-effect.
+- **The motion gate lives in `src/lib/motion.ts`.** Call `readMotionGate()` inside the GSAP setup callback for the one-shot "should this section animate?" decision (`{ prefersReducedMotion, isMobile, shouldAnimate }`) — don't hand-write `window.matchMedia` gates. For reactive viewport splits inside a section use `gsap.matchMedia()` with the **`MEDIA`** constants (`MEDIA.lgUp` / `MEDIA.belowLg` / `MEDIA.reducedMotion`). The mobile breakpoint is unified with Tailwind `lg` (1024px); never reintroduce the raw `1023px` string.
+- Reusable animations in `src/lib/gsap/animations.ts` (currently unused), and `src/lib/scrollTriggerRefresh.ts`.
 - Two providers in `src/app/layout.tsx` guard motion: **`PageBootProvider`** (boot/FOUC gating) and **`ScrollTriggerStabilityProvider`** (keeps ScrollTrigger measurements stable across reflows). Respect them — new scroll-driven sections should refresh ScrollTrigger via the existing helper, not ad-hoc.
 
 ## Component registry

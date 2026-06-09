@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import type { UIEvent as ReactUIEvent, WheelEvent as ReactWheelEvent } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { readMotionGate, MEDIA } from "@/lib/motion";
 import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 import { useSplitLines } from "@/components/typography/useSplitLines";
 import { useSplitScale } from "@/components/typography/useSplitScale";
@@ -110,17 +110,13 @@ export default function ModellDetailSection() {
     () => {
       if (!stackRef.current) return;
 
-      gsap.registerPlugin(ScrollTrigger);
-
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+      const { prefersReducedMotion } = readMotionGate();
 
       if (prefersReducedMotion) return;
 
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 1024px)", () => {
+      mm.add(MEDIA.lgUp, () => {
         if (!stackRef.current) return;
 
         const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
@@ -296,7 +292,7 @@ export default function ModellDetailSection() {
         };
       });
 
-      mm.add("(max-width: 1023px)", () => {
+      mm.add(MEDIA.belowLg, () => {
         const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
         cards.forEach((card) => {
           gsap.set(card, {

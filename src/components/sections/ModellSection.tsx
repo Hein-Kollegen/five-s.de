@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { MEDIA } from "@/lib/motion";
 import SplitText from "@/components/typography/SplitText";
 import { useSplitScale } from "@/components/typography/useSplitScale";
 import { useSplitLines } from "@/components/typography/useSplitLines";
@@ -133,11 +133,9 @@ export default function ModellSection() {
   useGSAP(() => {
     if (!viewportRef.current || !trackRef.current) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 1024px)", () => {
+    mm.add(MEDIA.lgUp, () => {
       const initialMetrics = getMetrics();
       if (!initialMetrics.cardWidth || !trackRef.current || !viewportRef.current) return;
 
@@ -320,7 +318,7 @@ export default function ModellSection() {
       };
     });
 
-    mm.add("(max-width: 1023px)", () => {
+    mm.add(MEDIA.belowLg, () => {
       if (!trackRef.current) return;
 
       gsap.set(trackRef.current, {
